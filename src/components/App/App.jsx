@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+
 import ImageGallery from "../ImageGallary/ImageGallery";
 import SearchBar from "../SearchBar/SearchBar"
 import Loader from "../Loader/Loader"
 import ErrorMessage from "../ErrorMessage/ErrorMessage"
 import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn"
+import ImageLoad from "../ImageModal/ImageModal"
+
 import css from "./App.module.css"
 import {fetchImages} from "../showImage"
 
@@ -15,11 +18,6 @@ export default function App() {
   
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState("");
-
-  const showImg = (id) => {
-    setArticle(id);
-    console.log(id)
-  };
 
   const handleSearch =(newQuery)=>{
     setQuery(newQuery);
@@ -52,15 +50,35 @@ export default function App() {
     getNewImages();
   },[page,query])
 
+
+  // ===========================Modal=====================================
+  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [selectedImage, setSelectedImage] = useState(null);
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setSelectedImage(null);
+    setModalIsOpen(false);
+  };
+
+
+
+
   return (
     <div className={css.cont}>
     
     <SearchBar onSearch ={handleSearch}/>
-
+    {article.length > 0 && <ImageGallery items={article} openModal={openModal} />}
+    {article.length > 0 && <ImageLoad
+    images={article}
+    open ={modalIsOpen}
+    closeModal={closeModal}
+    selectedImage={selectedImage}/>}
+    
     {error &&  <ErrorMessage/>}
     {isLoader &&  <Loader/>}
-   
-    {article.length > 0 && <ImageGallery items={article} imgItem={showImg}/>}
     {article.length > 0 && !isLoader && (<LoadMoreBtn onLoad ={hanleLoadMore}/>)}
     </div>
   );

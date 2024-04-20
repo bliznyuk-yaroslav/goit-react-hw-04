@@ -1,16 +1,18 @@
 import { useState } from "react";
+import css from "./ImageCard.module.css"
 
-export default function ImageCard({items, imgItem}) {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleOpen =()=>{
-    setIsOpen(!isOpen);
-    imgItem(items);
-  }
+export default function ImageCard({item, openModal}) {
+
     return (
-      <div>
-      {isOpen === true && <img src={items.urls.full}
-       alt={items.alt_description}
-       onClick={toggleOpen} />}
+      <div className={css.elements}>
+         <img
+         
+          src={item.urls.small} 
+          alt="{item.alt_description}" 
+          className={css.photo}
+          onClick={()=>openModal(item)}
+          />
      </div>
     );
   }
+  // onClick={() => imgItem(item)}
