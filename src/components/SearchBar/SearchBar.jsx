@@ -2,7 +2,7 @@ import  { Toaster, toast } from 'react-hot-toast';
 import css from "./SearchBar.module.css"
 import { FaSearch } from "react-icons/fa";
 
-export default function SearchBar({onSearch}) {
+export default function SearchBar({onSubmit}) {
 
   const handleSubmit = (event) =>{
     event.preventDefault();
@@ -12,7 +12,7 @@ export default function SearchBar({onSearch}) {
       toast.error('Please enter a search query');
       return;
     }
-    onSearch(searchText);
+    onSubmit(searchText);
        form.reset();
   }
     return (

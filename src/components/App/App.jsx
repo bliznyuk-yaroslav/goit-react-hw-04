@@ -11,7 +11,7 @@ import css from "./App.module.css"
 import {fetchImages} from "../showImage"
 
 export default function App() {
-  const [article, setArticle] = useState([]);
+  const [images, setImages] = useState([]);
   const [isLoader , setIsLoader] = useState(false)
   const [error, setError]=useState(false)
 
@@ -22,7 +22,7 @@ export default function App() {
   const handleSearch =(newQuery)=>{
     setQuery(newQuery);
     setPage(1);
-    setArticle([]);
+    setImages([]);
   };
 
   const hanleLoadMore =()=>{
@@ -38,8 +38,8 @@ export default function App() {
         setError(false);
         setIsLoader(true);
         const data = await fetchImages(query, page);
-        setArticle((prevArticles) => {
-          return [...prevArticles, ...data];
+        setImages((prevImages) => {
+          return [...prevImages, ...data];
         });
       } catch (error) {
         setError(true);
@@ -69,17 +69,17 @@ export default function App() {
   return (
     <div className={css.cont}>
     
-    <SearchBar onSearch ={handleSearch}/>
-    {article.length > 0 && <ImageGallery items={article} openModal={openModal} />}
-    {article.length > 0 && <ImageLoad
-    images={article}
+    <SearchBar onSubmit ={handleSearch}/>
+    {images.length > 0 && <ImageGallery items={images} openModal={openModal} />}
+    {images.length > 0 && <ImageLoad
+    images={images}
     open ={modalIsOpen}
     closeModal={closeModal}
     selectedImage={selectedImage}/>}
     
     {error &&  <ErrorMessage/>}
     {isLoader &&  <Loader/>}
-    {article.length > 0 && !isLoader && (<LoadMoreBtn onLoad ={hanleLoadMore}/>)}
+    {images.length > 0 && !isLoader && (<LoadMoreBtn onLoad ={hanleLoadMore}/>)}
     </div>
   );
 }
